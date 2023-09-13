@@ -13,9 +13,11 @@ Then('I should have heard {string}', function (expectedResponse) {
 
 Then('these licenses exist', function (table) {
   table.hashes().forEach(row => {
-    assert.equal(new License(row.class).description, row.description)
+    let license = new License(row.class);
+    assert.equal(license.description, row.description)
   });
 });
+
 Given('a license with class {string} validFrom {string}', function (className, validFrom) {
   this.license = new License(className, validFrom)
 });
