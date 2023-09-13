@@ -1,20 +1,25 @@
 class License {
-    static ofClass(className) {
+    className
+    description
+    validFrom
+
+    constructor(className, validFrom) {
         switch (className) {
             case "1":
-                return new License("1", "1st class, commercial airline pilots")
+                this.description = "1st class, commercial airline pilots"; break;
             case "2":
-                return new License("2", "2nd class, other commercial pilots")
+                this.description = "2nd class, other commercial pilots"; break;
             case "3":
-                return new License("3", "3rd class, recreational pilots")
+                this.description = "3rd class, recreational pilots"; break;
             default:
                 throw new Error("no such class");
         }
+        this.className = className;
+        this.validFrom = validFrom
     }
 
-    constructor(className, description) {
-        this.className = className;
-        this.description = description;
+    expiresBefore(date) {
+        return true;
     }
 }
 
