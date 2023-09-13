@@ -1,8 +1,8 @@
 class Greeter {
-  sayHello() {
-    return 'hello'
-  }
+    sayHello() {
+        return 'hello'
+    }
 }
-module.exports = {
-  Greeter
-}
+
+module.exports = Greeter
+
