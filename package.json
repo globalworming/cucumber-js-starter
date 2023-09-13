@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "npx cucumber-js --format progress-bar --format html:cucumber-report.html"
+    "test": "npx cucumber-js --format progress-bar --format html:cucumber-report.html --import \"features/support/**/*.mjs\""
   },
   "dependencies": {
     "@cucumber/cucumber": "^9.5.1"
