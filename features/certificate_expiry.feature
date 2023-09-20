@@ -11,11 +11,12 @@ Feature: Expiry
       | 2     |
       | 3     |
 
+  @only
   Scenario: medical certificates expire - 1st Class (ATP): Every 12 months if younger than age 40
-    Given pilot Jane is under 40 years old
-    And pilot Jane has a first class license
-    And pilot Jane has medical certificate from "2023-02-25"
-    Then on "2024-02-26" the medical certificate is expired
+    Given pilot "Jane" is under 40 years old
+    And pilot "Jane" has a first class license
+    And pilot "Jane" has medical certificate from "2023-02-25"
+    Then the medical certificate of "Jane" is expired on "2024-03-01"
 
   Scenario: medical certificates expire - 1st Class (ATP): Every 6 months over 40
     Given pilot Jane is over 40 years old
