@@ -1,4 +1,5 @@
 const MedicalCertificate = require("./MedicalCertificate");
+const License = require("./License");
 
 class Pilot {
     name
@@ -9,14 +10,50 @@ class Pilot {
         this.name = name
     }
 
-    addMedicalCertificate(validFrom) {
-        let validUntil = new Date(validFrom.getFullYear(), validFrom.getMonth(), validFrom.getDay());
-        let monthsValid = 12;
-        if (this.age >= 40) {
-            monthsValid = 6
+    addMedicalCertificate(validFrom, numberOfMonthsValid) {
+        this.medicalCertificate = new MedicalCertificate(validFrom, numberOfMonthsValid)
+    }
+
+    expireMedicalCertificate() {
+        let now = new Date();
+
+        if (this.age < 40 && this.pilotingLicense.className === "1") {
+            this.pilotingLicense = new License("3")
+            this.addMedicalCertificate(now, 48)
+            return
         }
-        validUntil.setMonth(validUntil.getMonth() + monthsValid);
-        this.medicalCertificate = new MedicalCertificate(validFrom, validUntil)
+
+        if (this.age >= 40 && this.pilotingLicense.className === "1") {
+            this.pilotingLicense = new License("2")
+            this.addMedicalCertificate(now, 6)
+            return
+        }
+
+        if (this.age < 40 && this.pilotingLicense.className === "2") {
+            this.pilotingLicense = new License("3")
+            this.addMedicalCertificate(now, 48)
+            return
+        }
+
+        if (this.age >= 40 && this.pilotingLicense.className === "2") {
+            this.pilotingLicense = new License("3")
+            this.addMedicalCertificate(now, 12)
+            return
+        }
+
+        if (this.age < 40 && this.pilotingLicense.className === "3") {
+            this.pilotingLicense = new License("expired");
+            this.medicalCertificate.isExired = true;
+            return
+        }
+
+        if (this.age >= 40 && this.pilotingLicense.className === "3") {
+            this.pilotingLicense = new License("expired");
+            this.medicalCertificate.isExired = true;
+            return
+        }
+
+        throw new Error("no matching rule")
     }
 }
 

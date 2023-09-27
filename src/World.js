@@ -11,8 +11,7 @@ class World {
 
 
     doesPilotExists(pilotName) {
-        let pilotsOfName = this.world.pilots.filter(pilot => pilot.name === pilotName);
-        return pilotsOfName.length > 0;
+        return !!this.world.pilots.find(pilot => pilot.name === pilotName);
     }
 
     pilotNamed(pilotName) {

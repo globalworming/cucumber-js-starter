@@ -1,13 +1,17 @@
 class MedicalCertificate {
     validFrom
-    validUntil
-    constructor(validFromDate, validUntil) {
+    numberOfMonthsValid
+    isExpired
+    constructor(validFromDate, numberOfMonthsValid) {
         this.validFrom = validFromDate
-        this.validUntil = validUntil;
+        this.numberOfMonthsValid = numberOfMonthsValid || 60;
+        this.isExpired = false
     }
 
-    isExpired(onDate) {
-        return onDate > this.validUntil;
+    isExpiredOnDate(date) {
+        let validUntil = new Date(this.validFrom.getFullYear(), this.validFrom.getMonth(), this.validFrom.getDay());
+        validUntil.setMonth(validUntil.getMonth() + this.numberOfMonthsValid);
+        return date > validUntil;
     }
 }
 

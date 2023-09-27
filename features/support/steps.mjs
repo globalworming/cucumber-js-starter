@@ -20,15 +20,20 @@ Then('these licenses exist', function (table) {
     });
 });
 
-Given('a license with class {string} validFrom {string}', function (className, validFrom) {
+function dateFromString(validFrom) {
+    const parts = validFrom.split("-")
+    return new Date(parts[0], parts[1], parts[2]);
+}
+
+Given('a medical certificate validFrom {string}', function (validFrom) {
     let world = this
-    world.license = new License(className, validFrom)
+    world.medicalCertificate = new MedicalCertificate(dateFromString(validFrom));
 });
 
-Then('on {string} the license is expired', function (date) {
+Then('on {string} the medical certificate is expired', function (date) {
     let world = this
-    const license = world.license;
-    assert.ok(license.expiresBefore(date))
+    const medicalCertificate = world.medicalCertificate;
+    assert.ok(medicalCertificate.isExpiredOnDate(dateFromString(date)))
 });
 
 Given('pilot {string} is under {int} years old', function (pilotName, age) {
@@ -54,5 +59,42 @@ Then('the medical certificate of {string} is expired on {string}', function (pil
 
     let world = new World(this)
     let pilot = world.pilotNamed(pilotName);
-    assert.ok(pilot.medicalCertificate.isExpired(onDate))
+    assert.ok(pilot.medicalCertificate.isExpiredOnDate(onDate))
+});
+
+Given('pilot {string} is {int} years old', function (pilotName, age) {
+    let world = new World(this)
+    let pilot = world.pilotNamed(pilotName);
+    pilot.age = age;
+});
+Given('pilot {string} has a license class {string}', function (pilotName, licenseClass) {
+    let world = new World(this)
+    let pilot = world.pilotNamed(pilotName);
+    pilot.pilotingLicense = new License(licenseClass);
+});
+Given('pilot {string} has valid medical certificate', function (pilotName) {
+    let world = new World(this)
+    let pilot = world.pilotNamed(pilotName);
+    let now = new Date();
+    pilot.addMedicalCertificate(now)
+});
+When('pilot {string}s medical certificate expires', function (pilotName) {
+    let world = new World(this)
+    let pilot = world.pilotNamed(pilotName);
+    pilot.expireMedicalCertificate();
+});
+Then('pilot {string} has a license of class {string}', function (pilotName, expectedLicenceClass) {
+    let world = new World(this)
+    let pilot = world.pilotNamed(pilotName);
+    assert.equal(pilot.pilotingLicense.className, expectedLicenceClass)
+});
+Then('pilot {string}s medical certificate is valid for another {int} months', function (pilotName, expectedNumberOfMonthsValid) {
+    let world = new World(this)
+    let pilot = world.pilotNamed(pilotName);
+    assert.equal(pilot.medicalCertificate.numberOfMonthsValid, expectedNumberOfMonthsValid)
+});
+Then('pilot {string}s medical certificate is expired', function (pilotName) {
+    let world = new World(this)
+    let pilot = world.pilotNamed(pilotName);
+    assert.ok(pilot.medicalCertificate.isExpired)
 });
