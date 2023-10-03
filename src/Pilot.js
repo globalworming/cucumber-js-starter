@@ -19,6 +19,27 @@ class Pilot {
                 this.medicalCertificate = new MedicalCertificate(validFrom, 12)
                 return
             }
+            if (this.age >= 40 && pilotingLicenseClassName === "1") {
+                this.medicalCertificate = new MedicalCertificate(validFrom, 6)
+                return
+            }
+            if (this.age < 40 && pilotingLicenseClassName === "2") {
+                this.medicalCertificate = new MedicalCertificate(validFrom, 12)
+                return
+            }
+            if (this.age >= 40 && pilotingLicenseClassName === "2") {
+                this.medicalCertificate = new MedicalCertificate(validFrom, 12)
+                return
+            }
+            if (this.age < 40 && pilotingLicenseClassName === "3") {
+                this.medicalCertificate = new MedicalCertificate(validFrom, 60)
+                return
+            }
+            if (this.age >= 40 && pilotingLicenseClassName === "3") {
+                this.medicalCertificate = new MedicalCertificate(validFrom, 24)
+                return
+            }
+
         }
         this.medicalCertificate = new MedicalCertificate(validFrom, numberOfMonthsValid)
     }

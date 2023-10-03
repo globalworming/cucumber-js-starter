@@ -12,6 +12,21 @@ Feature: Expiry
     And pilot "Jane" has medical certificate from "2023-02-25"
     Then the medical certificate of "Jane" is expired on "2024-03-01"
 
+  Scenario Outline: medical certificates expire after some months
+    Given pilot "Jane" is <age> years old
+    And pilot "Jane" has a license class "<class>"
+    And pilot "Jane" has valid medical certificate
+    And pilot "Jane"s medical certificate is valid for another <duration> months
+
+    Examples:
+      | age | class | duration |
+      | 39  | 1     | 12       |
+      | 40  | 1     | 6        |
+      | 39  | 2     | 12       |
+      | 40  | 2     | 12       |
+      | 39  | 3     | 60       |
+      | 40  | 3     | 24       |
+
   Scenario Outline: expiry examples where the licence class drops
     Given pilot "Jane" is <age> years old
     And pilot "Jane" has a license class "<class>"
@@ -29,20 +44,20 @@ Feature: Expiry
 
   Scenario Outline: expiry examples where the pilot license expires
     Given pilot "Jane" is <age> years old
-    And pilot "Jane" has a license class "<class>"
+    And pilot "Jane" has a license class "3"
     And pilot "Jane" has valid medical certificate
     When pilot "Jane"s medical certificate expires
-    Then pilot "Jane" has a license of class "<expectedPilotLicenseClassAfterExpiry>"
+    Then pilot "Jane" has a license of class "expired"
     And pilot "Jane"s medical certificate is expired
 
     Examples:
-      | age | class | expectedPilotLicenseClassAfterExpiry |
-      | 39  | 3     | expired                              |
-      | 40  | 3     | expired                              |
+      | age |
+      | 39  |
+      | 40  |
 
   Scenario: medical certificate expiry is calculated from last day of month
     Given a medical certificate valid from "2023-12-20"
-      And the medical certificate is valid for 1 month
+    And the medical certificate is valid for 1 month
     Then the medical certificate is not expired on "2023-12-31"
     And the medical certificate is not expired on "2023-12-21"
     And the medical certificate is expired on "2024-02-01"
