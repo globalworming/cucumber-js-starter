@@ -22,7 +22,7 @@ Then('these licenses exist', function (table) {
 
 function dateFromString(validFrom) {
     const parts = validFrom.split("-")
-    return new Date(parts[0], parts[1], parts[2]);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
 }
 
 Given('a medical certificate validFrom {string}', function (validFrom) {
@@ -97,4 +97,23 @@ Then('pilot {string}s medical certificate is expired', function (pilotName) {
     let world = new World(this)
     let pilot = world.pilotNamed(pilotName);
     assert.ok(pilot.medicalCertificate.isExpired)
+});
+
+Given('a medical certificate valid from {string}', function (date) {
+    this.medicalCertificate = new MedicalCertificate(dateFromString(date))
+});
+
+Given('the medical certificate is valid for {int} month', function (months) {
+    this.medicalCertificate.numberOfMonthsValid = months
+
+});
+Then('the medical certificate is expired on {string}', function (date) {
+    let isExpired = this.medicalCertificate.isExpiredOnDate(dateFromString(date));
+    assert.ok(isExpired)
+});
+Then('the medical certificate is not expired on {string}', function (date) {
+    const checkDate = dateFromString(date)
+    let isExpired = this.medicalCertificate.isExpiredOnDate(checkDate);
+    assert.ok(!isExpired)
+
 });

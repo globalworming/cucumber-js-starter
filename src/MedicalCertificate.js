@@ -8,8 +8,13 @@ class MedicalCertificate {
         this.isExpired = false
     }
 
+    expire() {
+        this.isExpired = true
+    }
+
     isExpiredOnDate(date) {
-        let validUntil = new Date(this.validFrom.getFullYear(), this.validFrom.getMonth(), this.validFrom.getDay());
+        let dateOfTheLastDayOfTheValidFromMonth = new Date(this.validFrom.getFullYear(), this.validFrom.getMonth() + 1, 0);
+        const validUntil = dateOfTheLastDayOfTheValidFromMonth;
         validUntil.setMonth(validUntil.getMonth() + this.numberOfMonthsValid);
         return date > validUntil;
     }

@@ -6,7 +6,7 @@ Feature: Expiry
     Given a medical certificate validFrom "2023-02-28"
     Then on "2030-01-01" the medical certificate is expired
 
-  Scenario: medical certificates expire - 1st Class (ATP): Every 12 months if younger than age 40
+  Scenario: medical certificates expire - 1st Class (ATP): 12 months if younger than age 40
     Given pilot "Jane" is under 40 years old
     And pilot "Jane" has a first class license
     And pilot "Jane" has medical certificate from "2023-02-25"
@@ -40,12 +40,13 @@ Feature: Expiry
       | 39  | 3     | expired                              |
       | 40  | 3     | expired                              |
 
-  Scenario: medical certifcate expiry is calculated from last day of month
-    Given a medical certificate valid from "2023-12-20" for pilot with licence class 1 over age 40
-    Then it is valid on "2023-12-31"
-    And it is valid on "2023-12-21"
-    And it is not valid "2024-07-01"
-    And it is valid "2024-06-31"
+  Scenario: medical certificate expiry is calculated from last day of month
+    Given a medical certificate valid from "2023-12-20"
+      And the medical certificate is valid for 1 month
+    Then the medical certificate is not expired on "2023-12-31"
+    And the medical certificate is not expired on "2023-12-21"
+    And the medical certificate is expired on "2024-02-01"
+    And the medical certificate is not expired on "2024-01-31"
 
   Scenario: medical certificate leap year....
 

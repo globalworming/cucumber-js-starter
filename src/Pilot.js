@@ -6,15 +6,25 @@ class Pilot {
     age
     pilotingLicense
     medicalCertificate
+
     constructor(name) {
         this.name = name
     }
 
     addMedicalCertificate(validFrom, numberOfMonthsValid) {
+        if (this.pilotingLicense?.className === undefined) throw new Error("must have piloting license")
+        const pilotingLicenseClassName = this.pilotingLicense.className;
+        if (numberOfMonthsValid === undefined) {
+            if (this.age < 40 && pilotingLicenseClassName === "1") {
+                this.medicalCertificate = new MedicalCertificate(validFrom, 12)
+                return
+            }
+        }
         this.medicalCertificate = new MedicalCertificate(validFrom, numberOfMonthsValid)
     }
 
     expireMedicalCertificate() {
+        this.medicalCertificate.expire()
         let now = new Date();
 
         if (this.age < 40 && this.pilotingLicense.className === "1") {
